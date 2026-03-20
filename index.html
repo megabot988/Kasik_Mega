@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Казик</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 75vh;
+            margin: 0;
+            gap: 0px;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .Main {
+            color: rgb(255, 255, 255);
+            background-color: rgb(141, 255, 198);
+            border-radius: 5px;
+            width: 300px;
+            height: 100px;
+            font-size: 40px;
+            border: rgb(96, 194, 145) 5px solid;
+            margin: 50px 800px;
+            transition: transform 0.3s ease;
+            transform: translateY(+1px);
+        }
+        div {
+            font-size: 40px;
+            margin: 20px 800px;
+        }
+        .Main:hover {
+            transition: transform 0.3s ease;
+            transform: translateY(-15px);
+        }
+        .Main:active {
+            border: rgb(74, 245, 159) 5px solid;
+        }
+    </style>
+</head>
+<body>
+    <div id="result">Нажмите Играть</div>
+    <div id="balance">Баланс: 100</div>
+    <button class="Main" id="playbtn">Играть</button>
+
+    <script>
+        const Game_cost = 10;
+        const Win_chance = 0.1;
+        const Win_reward = 100;
+
+        let balance = 100;
+
+        // Функция скачивания картинки
+        //function showDownloadButton() {
+            //const link = document.createElement('a');
+            //link.href = "img/Bom.jpg";   // путь к вашей картинке (проверьте, что файл существует)
+            //link.download = "zero_coins.jpg";
+            //document.body.appendChild(link);
+            //link.click();
+            //document.body.removeChild(link);
+        //}
+
+        // Отображаем начальный баланс
+        document.getElementById("balance").textContent = "Баланс: " + balance;
+
+        document.getElementById("playbtn").onclick = function() {
+            // Проверяем, хватает ли средств
+            if (balance < Game_cost) {
+                document.getElementById("result").textContent = "Недостаточно средств!";
+                // Если баланс уже 0, предлагаем скачать картинку
+                if (balance === 0) {
+                    showDownloadButton();
+                }
+                return; // выходим, если денег нет
+            }
+
+            // Списываем ставку
+            balance -= Game_cost;
+
+            // Определяем выигрыш
+            const win = Math.random() < Win_chance;
+            let resultText;
+            if (win) {
+                balance += Win_reward;
+                resultText = "Вы выиграли " + Win_reward + "!";
+            } else {
+                resultText = "Вы проиграли " + Game_cost + ".";
+            }
+
+            // Обновляем интерфейс
+            document.getElementById("result").textContent = resultText;
+            document.getElementById("balance").textContent = "Баланс: " + balance;
+
+            // Если баланс стал 0, скачиваем картинку
+            //if (balance === 0) {
+                //showDownloadButton();
+            //}
+        };
+    </script>
+</body>
+</html>
